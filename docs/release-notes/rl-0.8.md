@@ -492,3 +492,4 @@
 - Fix default [blink.cmp] sources "path" and "buffer" not working when
   `autocomplete.nvim-cmp.enable` was disabled and
   `autocomplete.nvim-cmp.sources` had not been modified.
+- Support `inherit` in [blink.cmp] `cmdlind.keymap.preset` option type.
