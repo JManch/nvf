@@ -493,6 +493,8 @@
   `autocomplete.nvim-cmp.enable` was disabled and
   `autocomplete.nvim-cmp.sources` had not been modified.
 
+- Support `inherit` in [blink.cmp] `cmdlind.keymap.preset` option type.
+
 [Jules](https://github.com/jules-sommer):
 
 [nvim-highlight-colors]: https://github.com/brenoprata10/nvim-highlight-colors
