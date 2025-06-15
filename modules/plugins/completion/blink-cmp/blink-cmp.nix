@@ -1,4 +1,5 @@
 {lib, ...}: let
+  inherit (lib.lists) optional;
   inherit (lib.options) mkEnableOption mkOption literalMD;
   inherit (lib.types) bool listOf str either attrsOf submodule enum anything int nullOr;
   inherit (lib.generators) mkLuaInline;
@@ -6,11 +7,11 @@
   inherit (lib.nvim.binds) mkMappingOption;
   inherit (lib.nvim.config) mkBool;
 
-  keymapType = submodule {
+  keymapType = isCmdline: submodule {
     freeformType = attrsOf (listOf (either str luaInline));
     options = {
       preset = mkOption {
-        type = enum ["default" "none" "super-tab" "enter" "cmdline"];
+        type = enum (["default" "none" "super-tab" "enter" "cmdline"] ++ optional isCmdline "inherit");
         default = "none";
         description = "keymap presets";
       };
@@ -53,7 +54,7 @@ in {
         };
 
         keymap = mkOption {
-          type = keymapType;
+          type = keymapType true;
           default = {};
           description = "blink.cmp cmdline keymap";
         };
@@ -81,7 +82,7 @@ in {
       };
 
       keymap = mkOption {
-        type = keymapType;
+        type = keymapType false;
         default = {};
         description = "blink.cmp keymap";
         example = literalMD ''
