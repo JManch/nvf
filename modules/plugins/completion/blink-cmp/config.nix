@@ -6,10 +6,10 @@
   inherit (lib.modules) mkIf;
   inherit (lib.strings) optionalString;
   inherit (lib.generators) mkLuaInline;
-  inherit (lib.attrsets) attrValues filterAttrs mapAttrsToList;
-  inherit (lib.lists) map optional elem;
+  inherit (lib.attrsets) attrValues filterAttrs mapAttrsToList optionalAttrs;
+  inherit (lib.lists) map optional optionals elem;
   inherit (lib.nvim.lua) toLuaObject;
-  inherit (builtins) concatStringsSep typeOf tryEval attrNames mapAttrs;
+  inherit (builtins) concatStringsSep typeOf tryEval attrNames mapAttrs filter;
 
   cfg = config.vim.autocomplete.blink-cmp;
   cmpCfg = config.vim.autocomplete.nvim-cmp;
@@ -55,7 +55,7 @@ in {
         after =
           # lua
           ''
-            ${optionalString config.vim.lazy.enable
+            ${optionalString (config.vim.lazy.enable && cmpCfg.enable)
               (concatStringsSep "\n" (map
                 (package: "require('lz.n').trigger_load(${toLuaObject (getPluginName package)})")
                 cmpCfg.sourcePlugins))}
@@ -66,22 +66,25 @@ in {
     autocomplete = {
       enableSharedCmpSources = true;
       blink-cmp.setupOpts = {
-        sources = {
+        sources = let
+          defaultBlinkSources = [
+            "lsp"
+            "path"
+            "snippets"
+            "buffer"
+          ];
+          cmpSources = filterAttrs (name: _: !elem name defaultBlinkSources);
+        in {
           default =
-            [
-              "lsp"
-              "path"
-              "snippets"
-              "buffer"
-            ]
-            ++ (attrNames cmpCfg.sources)
+            defaultBlinkSources
+            ++ optionals cmpCfg.enable (attrNames cmpSources)
             ++ (attrNames enabledBlinkSources);
           providers =
             mapAttrs (name: _: {
               inherit name;
               module = "blink.compat.source";
             })
-            cmpCfg.sources
+            (optionalAttrs cmpCfg.enable cmpSources)
             // (mapAttrs (name: definition: {
                 inherit name;
                 inherit (definition) module;
