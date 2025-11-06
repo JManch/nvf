@@ -1884,14 +1884,14 @@
       "type": "Git",
       "repository": {
         "type": "GitHub",
-        "owner": "neovim",
+        "owner": "JManch",
         "repo": "nvim-lspconfig"
       },
-      "branch": "master",
+      "branch": "nvf",
       "submodules": false,
-      "revision": "db8fef885009fdec0daeff3e5dda92e1f539611e",
-      "url": "https://github.com/neovim/nvim-lspconfig/archive/db8fef885009fdec0daeff3e5dda92e1f539611e.tar.gz",
-      "hash": "04ji3265bddlfqrb6gpv402nm078xwp4gbk03z3xh9cl1k7k1n2d"
+      "revision": "ff588c91e11c6c8cf12eeb942caa23951f3acb89",
+      "url": "https://github.com/JManch/nvim-lspconfig/archive/ff588c91e11c6c8cf12eeb942caa23951f3acb89.tar.gz",
+      "hash": "1p022y2wfjbqafkiwyh7mrsihxjdby2i1da6zkqrpdddhxsdhia5"
     },
     "nvim-metals": {
       "type": "Git",
