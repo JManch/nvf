@@ -306,7 +306,7 @@ in {
             # .tsx/.jsx files
             typescriptreact = cfg.format.type;
           };
-          setupOpts.formatters =
+          formatters =
             mapListToAttrs (name: {
               inherit name;
               value = formats.${name};
