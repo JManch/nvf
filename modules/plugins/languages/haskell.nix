@@ -21,8 +21,8 @@
   defaultServers = ["hls"];
   servers = {
     hls = {
+      inherit (cfg.lsp) cmd;
       enable = false;
-      cmd = [(getExe' pkgs.haskellPackages.haskell-language-server "haskell-language-server-wrapper") "--lsp"];
       filetypes = ["haskell" "lhaskell"];
       on_attach =
         mkLuaInline
@@ -83,6 +83,17 @@ in {
           default = config.vim.lsp.enable;
           defaultText = literalExpression "config.vim.lsp.enable";
         };
+
+      cmd = mkOption {
+        description = "haskell-language-server command to run as a list of strings";
+        example = ''[(getExe' pkgs.haskellPackages.haskell-language-server "haskell-language-server-wrapper") "--lsp"]'';
+        type = listOf str;
+        default = [
+          (getExe' cfg.lsp.package "haskell-language-server-wrapper")
+          "--lsp"
+        ];
+      };
+
       servers = mkOption {
         type = listOf (enum (attrNames servers));
         default = defaultServers;
